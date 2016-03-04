@@ -1,0 +1,18 @@
+name=<name of the connector>
+connector.class=<full path of the main class>
+topics=<list of kafka topics>
+tasks.max=<number of task to execute>
+
+version=<version number>
+
+geo.path=<path to maxmind path db files>
+
+#ELASTICSEARCH PROPERTIES
+es.hostsAndPort=<list of host:port of elasticsearch nodes>
+es.index=<index where to store data on elasticsearch>
+es.type=<type where to store data on elasticsearch>
+es.client.type=<type of client>
+es.cluster.name=<cluster name>
+es.input.json=<set to true to accept json data>
+discovery.zen.ping.multicast.enabled=<enable multicast node discovery>
+discovery.zen.ping.unicast.hosts=<list of host:port to contact for unicast node discovery>
