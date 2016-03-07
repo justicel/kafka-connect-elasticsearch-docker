@@ -1,0 +1,18 @@
+name=kafka-elasticsearch-sink
+connector.class=com.vimond.elasticsearch_kafka_connector.sink.ElastcisearchSinkConnector
+topics=connect-test-3
+tasks.max=1
+
+version=0.0.1
+
+geo.path={{GEO_IP_DIRECTORY}}
+
+#ELASTICSEARCH PROPERTIES
+es.hostsAndPort={{ELASTICSEARCH_ADDRESS}}:9300
+es.index=vimond-numbers
+es.type=user-asset_playback-event
+es.client.type=transport
+es.cluster.name=elasticsearch
+es.input.json=true
+discovery.zen.ping.multicast.enabled=false
+discovery.zen.ping.unicast.hosts={{ELASTICSEARCH_ADDRESS}}:9200

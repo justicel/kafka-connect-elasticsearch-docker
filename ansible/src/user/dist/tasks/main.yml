@@ -1,0 +1,25 @@
+---
+- name: install vimond-kafka-connect image
+  docker:
+    name:     vimond-kafka-connect
+    image:    vimond-docker-dockerv2-local.artifactoryonline.com/vimond-kafka-connect:{{ version }}
+    registry: https://vimond-docker-dockerv2-local.artifactoryonline.com
+    pull:           "{{ docker_pull | d('always') }}"
+    state:          reloaded
+    restart_policy: always
+    publish_all_ports: "true"
+  tags:
+    - kafka_vimond-kafka-connect
+
+
+# these are to populate values in consul key-value store, used for service discovery and port defaults.
+- name: populate vimond-kafka-connect service values in consul
+  run_once: true
+  uri: url=http://localhost:8500/v1/kv/haproxy_services/vimond-kafka-connect/{{ item.key }} body={{ item.value }} method=PUT
+  with_items:
+    - key: service_port
+      value: 8083
+    - key: context
+      value: /vkc
+  tags:
+    - kafka_vimond-kafka-connect

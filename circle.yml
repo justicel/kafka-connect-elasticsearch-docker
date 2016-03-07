@@ -1,0 +1,40 @@
+---
+machine:
+  services:
+    - docker
+  environment:
+    IMAGE_NAME: vimond-kafka-connect
+    BUILD_NUMBER: $CIRCLE_BUILD_NUM
+
+dependencies:
+  cache_directories:
+    - "~/docker"
+  override:
+    - docker info
+    - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASSWORD -e developers@vimond.com $DOCKER_PRIVATE_REPO
+    - sudo pip install docker-compose
+    - docker build -t $IMAGE_NAME:$CIRCLE_BUILD_NUM .
+    - docker tag -f $IMAGE_NAME:$CIRCLE_BUILD_NUM $IMAGE_NAME:latest
+
+deployment:
+  artifactory:
+    branch: master
+    commands:
+      - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASSWORD -e developers@vimond.com $DOCKER_PRIVATE_REPO
+      - docker tag -f $IMAGE_NAME:$CIRCLE_BUILD_NUM $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
+      - docker tag  $IMAGE_NAME:$CIRCLE_BUILD_NUM $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
+      - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
+      - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
+      - sh ansible/deploy_me.sh $CIRCLE_SHA1 $(git describe --tags --always) $IMAGE_NAME
+      - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"
+
+  release:
+    tag: /v[0-9]+(\.[0-9]+)*/
+    commands:
+      - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASSWORD -e developers@vimond.com $DOCKER_PRIVATE_REPO
+      - docker tag -f $IMAGE_NAME:$CIRCLE_BUILD_NUM $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
+      - docker tag    $IMAGE_NAME:$CIRCLE_BUILD_NUM $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
+      - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
+      - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
+      - sh ansible/deploy_me.sh $CIRCLE_SHA1 $(git describe --tags --always) $IMAGE_NAME
+      - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"

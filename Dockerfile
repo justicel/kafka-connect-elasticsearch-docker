@@ -48,6 +48,7 @@ RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie
 # Set environment
 ENV JAVA_HOME /opt/jdk
 ENV PATH ${PATH}:${JAVA_HOME}/bin
+ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
 #Install scala
 RUN apk add bash && \
@@ -60,7 +61,50 @@ RUN apk add bash && \
     ln -s "${SCALA_HOME}/bin/"* "/usr/bin/" && \
     rm -rf "/tmp/"*
 
-RUN apk add jq
+
+RUN apk update \
+    && apk add jq \
+    && apk add zlib-dev \
+    && apk add curl-dev \
+    && apk add sudo \
+    && apk add build-base
+
+#download and install maxmind geoupdate
+ENV \
+    GEOIP_USERID=999999 \
+    GEOIP_LICENSE=000000000000 \
+    GEOIP_PRODUCT_LINE="ProductIds GeoLite2-City GeoLite2-Country GeoLite-Legacy-IPv6-City GeoLite-Legacy-IPv6-Country 506 517 533" \
+    GEO_IP_DIRECTORY=/usr/local/share/GeoIP
+
+ADD config/GeoIP.conf $GEO_IP_DIRECTORY/GeoIP.conf
+
+WORKDIR /tmp
+
+RUN wget "https://github.com/maxmind/geoipupdate/releases/download/v2.2.2/geoipupdate-2.2.2.tar.gz" \
+    && tar xzf "geoipupdate-2.2.2.tar.gz" \
+    && cd "geoipupdate-2.2.2" \
+    && ./configure && make && sudo make install \
+
+    # Configure maxmind
+    && sed -i "s/YOUR_USER_ID_HERE/$GEOIP_USERID/g" $GEO_IP_DIRECTORY/GeoIP.conf \
+    && sed -i "s/YOUR_LICENSE_KEY_HERE/$GEOIP_LICENSE/g" $GEO_IP_DIRECTORY/GeoIP.conf \
+    && sed -i "s/^ProductIds.*$/$GEOIP_PRODUCT_LINE/g" $GEO_IP_DIRECTORY/GeoIP.conf \
+    && geoipupdate -f $GEO_IP_DIRECTORY/GeoIP.conf -v \
+
+    # Download the geo lite ip database
+    && wget "http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz" \
+    && gunzip -c GeoIP.dat.gz > $GEO_IP_DIRECTORY/GeoIP.dat \
+    && rm GeoIP.dat.gz \
+
+
+    # Setup a cron job that updates the geo database
+    && echo \
+    'geoipupdate -f /etc/GeoIP.conf 2>&1 | logger\n'\ >> /etc/periodic/weekly/geoip \
+    && chmod +x /etc/periodic/weekly/geoip \
+    && rm -rf "/tmp/"*
+
+
+VOLUME $GEO_IP_DIRECTORY
 
 #Donwload and install kafka
 ADD download-kafka.sh /tmp/download-kafka.sh
@@ -68,7 +112,7 @@ RUN chmod +x -R /tmp
 RUN /tmp/download-kafka.sh
 RUN tar xf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt
 
-EXPOSE 8083
+EXPOSE 8160
 
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 

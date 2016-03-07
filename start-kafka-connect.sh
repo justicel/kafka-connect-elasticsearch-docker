@@ -23,6 +23,7 @@ if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	  cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/connect-elasticsearch.properties.template | sed \
       -e "s|{{ELASTICSEARCH_ADDRESS}}|${ELASTICSEARCH_ADDRESS:-elasticsearch}|g" \
       -e "s|{{KAFKA_HOME}}|${KAFKA_HOME}|g" \
+      -e "s|{{GEO_IP_DIRECTORY}}|/usr/local/share/GeoIP|g" \
        > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/connect-elasticsearch.properties
 	fi
 
