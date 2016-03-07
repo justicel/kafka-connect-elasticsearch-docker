@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-COMPONENT="vimond-kafka-connect"
+COMPONENT="kafka-connect-elasticsearch-docker"
 
 tar -cvf "temp.tar" -C ansible/src/user/dist .
 curl -i -u"$ARTIFACTORY_USER:$ARTIFACTORY_PASSWORD" -T temp.tar \

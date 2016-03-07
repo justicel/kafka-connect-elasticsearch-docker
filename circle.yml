@@ -3,7 +3,7 @@ machine:
   services:
     - docker
   environment:
-    IMAGE_NAME: vimond-kafka-connect
+    IMAGE_NAME: kafka-connect-elasticsearch-docker
     BUILD_NUMBER: $CIRCLE_BUILD_NUM
 
 dependencies:

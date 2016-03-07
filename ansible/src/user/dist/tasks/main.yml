@@ -1,8 +1,8 @@
 ---
-- name: install vimond-kafka-connect image
+- name: install kafka-connect-elasticsearch-docker image
   docker:
-    name:     vimond-kafka-connect
-    image:    vimond-docker-dockerv2-local.artifactoryonline.com/vimond-kafka-connect:{{ version }}
+    name:     kafka-connect-elasticsearch-docker
+    image:    vimond-docker-dockerv2-local.artifactoryonline.com/kafka-connect-elasticsearch-docker:{{ version }}
     registry: https://vimond-docker-dockerv2-local.artifactoryonline.com
     pull:           "{{ docker_pull | d('always') }}"
     state:          reloaded
@@ -14,18 +14,18 @@
       KAFKA_ADDRESS: kafka-08.service.consul
       ELASTICSEARCH: elasticsearch.service.consul
   tags:
-    - kafka_vimond-kafka-connect
+    - kafka_kafka-connect-elasticsearch-docker
 
 
 # these are to populate values in consul key-value store, used for service discovery and port defaults.
-- name: populate vimond-kafka-connect service values in consul
+- name: populate kafka-connect-elasticsearch-docker service values in consul
   run_once: true
-  uri: url=http://localhost:8500/v1/kv/haproxy_services/vimond-kafka-connect/{{ item.key }} body={{ item.value }} method=PUT
+  uri: url=http://localhost:8500/v1/kv/haproxy_services/kafka-connect-elasticsearch-docker/{{ item.key }} body={{ item.value }} method=PUT
   with_items:
     - key: service_port
-      value: 8083
+      value: 8160
     - key: context
       value: /vkc
   tags:
-    - kafka_vimond-kafka-connect
+    - kafka_kafka-connect-elasticsearch-docker
 
