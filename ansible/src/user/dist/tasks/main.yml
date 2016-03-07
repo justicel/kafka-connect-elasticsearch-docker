@@ -8,6 +8,11 @@
     state:          reloaded
     restart_policy: always
     publish_all_ports: "true"
+    env:
+      KAFKA_CONNECT_MODE: distributed
+      ZOOKEEPER_ADDRESS: zk-0.service.consul
+      KAFKA_ADDRESS: kafka-08.service.consul
+      ELASTICSEARCH: elasticsearch.service.consul
   tags:
     - kafka_vimond-kafka-connect
 
@@ -23,3 +28,4 @@
       value: /vkc
   tags:
     - kafka_vimond-kafka-connect
+
