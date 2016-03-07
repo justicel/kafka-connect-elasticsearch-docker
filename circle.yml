@@ -16,6 +16,10 @@ dependencies:
     - docker build -t $IMAGE_NAME:$CIRCLE_BUILD_NUM .
     - docker tag -f $IMAGE_NAME:$CIRCLE_BUILD_NUM $IMAGE_NAME:latest
 
+test:
+  override:
+    - echo "test"
+
 deployment:
   artifactory:
     branch: master
