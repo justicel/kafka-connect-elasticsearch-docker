@@ -112,8 +112,6 @@ RUN chmod +x -R /tmp
 RUN /tmp/download-kafka.sh
 RUN tar xf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt
 
-EXPOSE 8160
-
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
 RUN mkdir ${KAFKA_HOME}/connectors
