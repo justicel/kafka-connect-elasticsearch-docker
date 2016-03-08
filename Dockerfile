@@ -122,8 +122,30 @@ ADD config/connect-distributed.properties /opt/kafka_${SCALA_VERSION}-${KAFKA_VE
 
 ADD lib/connectors ${KAFKA_HOME}/connectors
 
+#JVM and JMX option
+
+ENV KAFKA_JVM_PERFORMANCE_OPTS -server -XX:+UseG1GC \
+                                       -XX:MaxGCPauseMillis=20 \
+                                       -XX:InitiatingHeapOccupancyPercent=35 \
+                                       -XX:+DisableExplicitGC \
+                                       -Djava.awt.headless=true \
+                                       -XX:+PrintGCDetails \
+                                       -XX:+PrintGCDateStamps \
+                                       -XX:+PrintTenuringDistribution
+
+ENV KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote \
+                   -Dcom.sun.management.jmxremote.port=9010 \
+                   -Dcom.sun.management.jmxremote.rmi.port=9010 \
+                   -Dcom.sun.management.jmxremote.local.only=false \
+                   -Dcom.sun.management.jmxremote.authenticate=false \
+                   -Dcom.sun.management.jmxremote.ssl=false \
+
 EXPOSE 8160
 ENV SERVICE_8160_NAME kafka-connect-elasticsearch-docker
+ENV SERVICE_8160_TAGS "haproxy-lb-http,service,haproxy-backend"
+
+ENV SERVICE_9010_NAME kafka-connect-elasticsearch-docker-jmx
+ENV SERVICE_9010_TAGS "tcp,private"
 
 CMD start-kafka-connect.sh
     
