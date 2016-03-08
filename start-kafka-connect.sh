@@ -2,8 +2,7 @@
 
 $BIN_EXEC;
 $CONFIG_FILE;
-$CONFIG_STORAGE_TOPIC;
-$OFFSET_STORAGE_TOPIC;
+
 
 if [[ -z "$CLASSPATH" ]]; then
     export CLASSPATH="${KAFKA_HOME}/connectors/*"
@@ -41,8 +40,8 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
 	ZOOKEEPER_ADDRESS=${ZOOKEEPER_ADDRESS:-zookeeper}
 
     #create topics for distributing offset and connectors settings
-    CONFIG_STORAGE_TOPIC=${CONFIG_STORAGE_TOPIC:-connect-config-storage}
-    OFFSET_STORAGE_TOPIC=${OFFSET_STORAGE_TOPIC:-connect-offset-storage}
+    CONFIG_STORAGE_TOPIC=${CONFIG_STORAGE_TOPIC:-kafka-connect-config-storage}
+    OFFSET_STORAGE_TOPIC=${OFFSET_STORAGE_TOPIC:-kafka-connect-offset-storage}
 
     $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS:2181 --replication-factor 3 --partition 1 --topic ${CONFIG_STORAGE_TOPIC}
     $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS:2181 --replication-factor 3 --partition 50 --topic ${OFFSET_STORAGE_TOPIC}

@@ -13,6 +13,8 @@
       ZOOKEEPER_ADDRESS: zk-0.service.consul
       KAFKA_ADDRESS: kafka-08.service.consul
       ELASTICSEARCH: elasticsearch.service.consul
+      CONFIG_STORAGE_TOPIC: kafka-connect-config-storage
+      OFFSET_STORAGE_TOPIC: kafka-connect-offset-storage
   tags:
     - kafka_kafka-connect-elasticsearch-docker
 
