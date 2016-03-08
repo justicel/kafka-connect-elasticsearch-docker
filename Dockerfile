@@ -122,5 +122,8 @@ ADD config/connect-distributed.properties /opt/kafka_${SCALA_VERSION}-${KAFKA_VE
 
 ADD lib/connectors ${KAFKA_HOME}/connectors
 
+EXPOSE 8160
+ENV SERVICE_8160_NAME kafka-connect-elasticsearch-docker
+
 CMD start-kafka-connect.sh
     
