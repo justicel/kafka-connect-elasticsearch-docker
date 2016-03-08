@@ -1,49 +1,12 @@
-FROM alpine:3.2
+FROM anapsix/alpine-java
 
 MAINTAINER Matteo Remo Luzzi <matteo@vimond.com> 
 
-# Install cURL
-RUN apk --update add curl ca-certificates tar && \
-    curl -Ls https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk > /tmp/glibc-2.21-r2.apk && \
-    apk add --allow-untrusted /tmp/glibc-2.21-r2.apk
-
-# Java Version
-ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 45
-ENV JAVA_VERSION_BUILD 14
-ENV JAVA_PACKAGE       jdk
 
 ENV KAFKA_VERSION "0.9.0.0"
 ENV SCALA_VERSION_DOWNLOAD "2.11.0"
 ENV SCALA_VERSION "2.11"
 ENV SCALA_HOME /usr/share/scala
-
-# Download and unarchive Java
-RUN mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie"\
-  http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz \
-    | tar -xzf - -C /opt &&\
-    ln -s /opt/jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR} /opt/jdk &&\
-    rm -rf /opt/jdk/*src.zip \
-           /opt/jdk/lib/missioncontrol \
-           /opt/jdk/lib/visualvm \
-           /opt/jdk/lib/*javafx* \
-           /opt/jdk/jre/lib/plugin.jar \
-           /opt/jdk/jre/lib/ext/jfxrt.jar \
-           /opt/jdk/jre/bin/javaws \
-           /opt/jdk/jre/lib/javaws.jar \
-           /opt/jdk/jre/lib/desktop \
-           /opt/jdk/jre/plugin \
-           /opt/jdk/jre/lib/deploy* \
-           /opt/jdk/jre/lib/*javafx* \
-           /opt/jdk/jre/lib/*jfx* \
-           /opt/jdk/jre/lib/amd64/libdecora_sse.so \
-           /opt/jdk/jre/lib/amd64/libprism_*.so \
-           /opt/jdk/jre/lib/amd64/libfxplugins.so \
-           /opt/jdk/jre/lib/amd64/libglass.so \
-           /opt/jdk/jre/lib/amd64/libgstreamer-lite.so \
-           /opt/jdk/jre/lib/amd64/libjavafx*.so \
-           /opt/jdk/jre/lib/amd64/libjfx*.so
-   
 
 # Set environment
 ENV JAVA_HOME /opt/jdk
@@ -51,8 +14,7 @@ ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
 #Install scala
-RUN apk add bash && \
-    cd "/tmp" && \
+RUN cd "/tmp" && \
     wget "http://downloads.typesafe.com/scala/${SCALA_VERSION_DOWNLOAD}/scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
     tar xzf "scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
     mkdir "${SCALA_HOME}" && \
@@ -110,7 +72,7 @@ VOLUME $GEO_IP_DIRECTORY
 ADD download-kafka.sh /tmp/download-kafka.sh
 RUN chmod +x -R /tmp
 RUN /tmp/download-kafka.sh
-RUN tar xf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt
+RUN tar xzf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt
 
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
@@ -138,9 +100,11 @@ ENV KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote \
                    -Dcom.sun.management.jmxremote.rmi.port=9010 \
                    -Dcom.sun.management.jmxremote.local.only=false \
                    -Dcom.sun.management.jmxremote.authenticate=false \
-                   -Dcom.sun.management.jmxremote.ssl=false \
+                   -Dcom.sun.management.jmxremote.ssl=false
 
 EXPOSE 8160
+EXPOSE 9010
+
 ENV SERVICE_8160_NAME kafka-connect-elasticsearch-docker
 ENV SERVICE_8160_TAGS "haproxy-lb-http,service,haproxy-backend"
 
