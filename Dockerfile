@@ -90,10 +90,7 @@ ENV KAFKA_JVM_PERFORMANCE_OPTS -server -XX:+UseG1GC \
                                        -XX:MaxGCPauseMillis=20 \
                                        -XX:InitiatingHeapOccupancyPercent=35 \
                                        -XX:+DisableExplicitGC \
-                                       -Djava.awt.headless=true \
-                                       -XX:+PrintGCDetails \
-                                       -XX:+PrintGCDateStamps \
-                                       -XX:+PrintTenuringDistribution
+                                       -Djava.awt.headless=true
 
 ENV KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote \
                    -Dcom.sun.management.jmxremote.port=9010 \
