@@ -7,7 +7,11 @@
     pull:           "{{ docker_pull | d('always') }}"
     state:          reloaded
     restart_policy: always
-    publish_all_ports: "true"
+    expose:
+          - 8160
+          - 9010
+        ports:
+          - 8160:8160
     env:
       KAFKA_CONNECT_MODE: distributed
       ZOOKEEPER_ADDRESS: zk-0.service.consul
