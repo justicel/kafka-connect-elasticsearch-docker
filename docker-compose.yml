@@ -19,7 +19,7 @@ kafka:
     - "9092:9092"
 
 elasticsearch:
-   image: elasticsearch:1.7.5
+   image: elasticsearch:1.7.2
    container_name: elasticsearch
    hostname: elasticsearch
    ports:
@@ -31,7 +31,7 @@ kafka-connect:
   container_name: kafka-connect
   hostname: kafka-connect
   ports:
-   - "8083:8083"
+   - "8160:8160"
   environment:
     KAFKA_CONNECT_MODE: distributed
     KAFKA_ADDRESS: 192.168.99.100
