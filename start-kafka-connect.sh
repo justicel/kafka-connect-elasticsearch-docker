@@ -27,7 +27,6 @@ if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	fi
 
 	cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}.template | sed \
-	  -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$IP}|g" \
 	  -e "s|{{KAFKA_ADDRESS}}|${KAFKA_ADDRESS:-kafka}|g" \
    > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
 
@@ -49,7 +48,6 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
     cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}.template | sed \
     -e "s|{{CONFIG_STORAGE_TOPIC}}|${CONFIG_STORAGE_TOPIC}|g" \
     -e "s|{{OFFSET_STORAGE_TOPIC}}|${OFFSET_STORAGE_TOPIC}|g" \
-    -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$IP}|g" \
     -e "s|{{KAFKA_ADDRESS}}|${KAFKA_ADDRESS:-kafka}|g" \
     > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
 
