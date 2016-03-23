@@ -23,6 +23,7 @@ RUN cd "/tmp" && \
     ln -s "${SCALA_HOME}/bin/"* "/usr/bin/" && \
     rm -rf "/tmp/"*
 
+RUN echo 'http://dl-4.alpinelinux.org/alpine/v3.3/main' > /etc/apk/repositories
 
 RUN apk update \
     && apk add jq \
