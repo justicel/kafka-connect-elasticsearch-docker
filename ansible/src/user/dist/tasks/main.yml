@@ -8,10 +8,10 @@
     state:          reloaded
     restart_policy: always
     expose:
-          - 8160
-          - 9010
-        ports:
-          - 8160:8160
+      - 8160
+      - 9010
+    ports:
+      - 8160:8160
     env:
       KAFKA_CONNECT_MODE: distributed
       ZOOKEEPER_ADDRESS: zk-0.service.consul
@@ -34,4 +34,3 @@
       value: /vkc
   tags:
     - kafka_kafka-connect-elasticsearch-docker
-
