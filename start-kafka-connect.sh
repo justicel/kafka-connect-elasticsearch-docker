@@ -9,7 +9,7 @@ if [[ -z "$CLASSPATH" ]]; then
    fi
 
 #get the internal ip
-IP=$(cat /etc/hosts | head -n1 | awk '{print $1}')
+IP=$(/sbin/ip route|awk '/default/ { print $3 }')
 
 if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	BIN_EXEC=connect-standalone
@@ -23,6 +23,7 @@ if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
       -e "s|{{ELASTICSEARCH_ADDRESS}}|${ELASTICSEARCH_ADDRESS:-elasticsearch}|g" \
       -e "s|{{KAFKA_HOME}}|${KAFKA_HOME}|g" \
       -e "s|{{GEO_IP_DIRECTORY}}|/usr/local/share/GeoIP|g" \
+      -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$IP}|g" \
        > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/connect-elasticsearch.properties
 	fi
 
@@ -49,6 +50,7 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
     -e "s|{{CONFIG_STORAGE_TOPIC}}|${CONFIG_STORAGE_TOPIC}|g" \
     -e "s|{{OFFSET_STORAGE_TOPIC}}|${OFFSET_STORAGE_TOPIC}|g" \
     -e "s|{{KAFKA_ADDRESS}}|${KAFKA_ADDRESS:-kafka}|g" \
+    -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$IP}|g" \
     > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
 
     exec /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/bin/${BIN_EXEC}.sh /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
