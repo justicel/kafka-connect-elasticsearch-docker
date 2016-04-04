@@ -1,15 +1,8 @@
 #!/bin/bash
 
-$BIN_EXEC;
-$CONFIG_FILE;
-
-
 if [[ -z "$CLASSPATH" ]]; then
     export CLASSPATH="${KAFKA_HOME}/connectors/*"
-   fi
-
-#get the internal ip
-IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+fi
 
 if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	BIN_EXEC=connect-standalone
@@ -49,7 +42,7 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
     -e "s|{{CONFIG_STORAGE_TOPIC}}|${CONFIG_STORAGE_TOPIC}|g" \
     -e "s|{{OFFSET_STORAGE_TOPIC}}|${OFFSET_STORAGE_TOPIC}|g" \
     -e "s|{{KAFKA_ADDRESS}}|${KAFKA_ADDRESS:-kafka}|g" \
-    -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$IP}|g" \
+    -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$THIS_IP}|g" \
     > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
 
     exec /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/bin/${BIN_EXEC}.sh /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties

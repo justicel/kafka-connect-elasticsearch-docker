@@ -1,4 +1,6 @@
 ---
+- set_fact: thisIp="{{hostvars[inventory_hostname]['ansible_' + iface]['ipv4']['address']}}"
+
 - name: install kafka-connect-elasticsearch-docker image
   docker:
     name:     kafka-connect-elasticsearch-docker
@@ -19,18 +21,6 @@
       ELASTICSEARCH: elasticsearch.service.consul
       CONFIG_STORAGE_TOPIC: kafka-connect-config-storage
       OFFSET_STORAGE_TOPIC: kafka-connect-offset-storage
-  tags:
-    - kafka_kafka-connect-elasticsearch-docker
-
-
-# these are to populate values in consul key-value store, used for service discovery and port defaults.
-- name: populate kafka-connect-elasticsearch-docker service values in consul
-  run_once: true
-  uri: url=http://localhost:8500/v1/kv/haproxy_services/kafka-connect-elasticsearch-docker/{{ item.key }} body={{ item.value }} method=PUT
-  with_items:
-    - key: service_port
-      value: 8160
-    - key: context
-      value: /vkc
+      THIS_IP: {{ thisIp }}
   tags:
     - kafka_kafka-connect-elasticsearch-docker
