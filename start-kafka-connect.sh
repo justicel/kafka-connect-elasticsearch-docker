@@ -9,7 +9,7 @@ if [[ -z "$CLASSPATH" ]]; then
    fi
 
 #get the internal ip
-IP=kafka-connect-elasticsearch-docker.service.consul
+IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	BIN_EXEC=connect-standalone
