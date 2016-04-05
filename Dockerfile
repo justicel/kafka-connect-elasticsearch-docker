@@ -32,6 +32,19 @@ RUN apk update \
     && apk add sudo \
     && apk add build-base
 
+#install daemontools
+RUN mkdir -p /package && \
+    chmod 1755 /package && \
+    cd /package && \
+    wget "https://cr.yp.to/daemontools/daemontools-0.76.tar.gz" && \
+    gunzip daemontools-0.76.tar.gz && \
+    tar -xpf daemontools-0.76.tar && \
+    rm -f daemontools-0.76.tar && \
+    cd admin/daemontools-0.76 && \
+    echo "gcc -O2 -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -include /usr/include/errno.h" > src/conf-cc && \
+    ./package/install
+
+
 #download and install maxmind geoupdate
 ENV \
     GEOIP_USERID=999999 \
@@ -62,10 +75,13 @@ RUN wget "https://github.com/maxmind/geoipupdate/releases/download/v2.2.2/geoipu
 
     # Setup a cron job that updates the geo database
     && echo \
-    'geoipupdate -f /etc/GeoIP.conf 2>&1 | logger\n'\ >> /etc/periodic/weekly/geoip \
+    '#!/bin/sh\ngeoipupdate -f /usr/local/share/GeoIP/GeoIP.conf 2>&1 | logger'\ >> /etc/periodic/weekly/geoip \
     && chmod +x /etc/periodic/weekly/geoip \
-    && rm -rf "/tmp/"*
+    && rm -rf "/tmp/"*  \
+    && mkdir /service/cron
 
+#create folder for supervising kafka execution
+RUN mkdir /service/kafka
 
 VOLUME $GEO_IP_DIRECTORY
 
@@ -79,7 +95,10 @@ ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
 RUN mkdir ${KAFKA_HOME}/connectors
 
-ADD start-kafka-connect.sh /usr/bin/start-kafka-connect.sh
+ADD start-kafka-connect.sh /service/kafka/run
+ADD start-cron.sh /service/cron/run
+RUN chmod -R 775 /service/kafka/run
+RUN chmod -R 775 /service/cron/run
 ADD config/connect-standalone.properties /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/connect-standalone.properties.template
 ADD config/connect-distributed.properties /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/connect-distributed.properties.template
 
@@ -109,5 +128,5 @@ ENV SERVICE_8160_TAGS "haproxy-lb-http,service,haproxy-backend"
 ENV SERVICE_9010_NAME kafka-connect-elasticsearch-docker-jmx
 ENV SERVICE_9010_TAGS "tcp,private"
 
-CMD start-kafka-connect.sh
+ENTRYPOINT ["/usr/local/bin/svscan", "/service"]
     
