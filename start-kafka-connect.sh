@@ -35,8 +35,8 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
     CONFIG_STORAGE_TOPIC=${CONFIG_STORAGE_TOPIC:-kafka-connect-config-storage}
     OFFSET_STORAGE_TOPIC=${OFFSET_STORAGE_TOPIC:-kafka-connect-offset-storage}
 
-    $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS:2181 --replication-factor 3 --partition 1 --topic ${CONFIG_STORAGE_TOPIC}
-    $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS:2181 --replication-factor 3 --partition 50 --topic ${OFFSET_STORAGE_TOPIC}
+    $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS/kafka0.8:2181 --replication-factor 3 --partition 1 --topic ${CONFIG_STORAGE_TOPIC}
+    $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $ZOOKEEPER_ADDRESS/kafka0.8:2181 --replication-factor 3 --partition 50 --topic ${OFFSET_STORAGE_TOPIC}
 
     cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}.template | sed \
     -e "s|{{CONFIG_STORAGE_TOPIC}}|${CONFIG_STORAGE_TOPIC}|g" \
