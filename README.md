@@ -8,11 +8,11 @@ or <code>docker-compose up</code>
 Is it possible to specify the following variables:
 <ul>
   <li>KAFKA_CONNECT_MODE: valid values are <i>standalone</i> and <i>distributed</i></li>
-  <li>CONNECT_ADVERTISED_HOSTNAME: hostname of the machine where the container runs. If not set it is resolved in the private ip of the machine</li>
+  <li>CONNECT_ADVERTISED_HOSTNAME: hostname of the machine where the container runs. If not set it is resolved in ip of the machine where the container runs</li>
   <li>ZOOKEEPER_ADDRESS: address of zookeeper instance running. It is used in distributed execution mode</li>
   <li>KAFKA_ADDRESS: address of the kafka cluster used by kafka connect</li>
-  <li>ELASTICSEARCH_ADDRESS: address of the elasticsearch where to write data</li>
-  <li>CONNECTOR_NAME: name of the connector to execute in standalone mode. Defaults to elasticsearch</li>
+  <li>ELASTICSEARCH_ADDRESS: address of elasticsearch where to write data</li>
+  <li>CONNECTOR_NAME: name of the connector to execute in standalone mode. Default to elasticsearch</li>
 </ul>
 
 ## Assumption
@@ -41,5 +41,5 @@ POST kafka-connect-address:8083/connectors -d
     }
 }
 ```
-Kafka connect doesn't have a master/slave structure, then every node of the cluster has is own rest interface and can create/delete connectors.
+Kafka connect doesn't have a master/slave structure, then every node of the cluster has is own rest interface and can activate/stop connectors.
 For more information regarding Kafka connect read the official <a href="http://docs.confluent.io/2.0.0/connect/index.html">documentation</a>
