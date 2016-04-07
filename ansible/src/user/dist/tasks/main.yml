@@ -22,5 +22,6 @@
       CONFIG_STORAGE_TOPIC: kafka-connect-config
       OFFSET_STORAGE_TOPIC: kafka-connect-offset
       THIS_IP: "{{ thisIp }}"
+      KAFKA_NAMESPACE: /kafka0.8
   tags:
     - kafka_kafka-connect-elasticsearch-docker
