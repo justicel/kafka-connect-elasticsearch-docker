@@ -12,7 +12,7 @@ kafka:
   links:
     - zookeeper:zk
   environment:
-    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.101
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   ports:
@@ -34,7 +34,9 @@ kafka-connect:
    - "8160:8160"
   environment:
     KAFKA_CONNECT_MODE: distributed
-    KAFKA_ADDRESS: 192.168.99.101
-    ZOOKEEPER_ADDRESS: 192.168.99.101
-    ELASTICSEARCH_ADDRESS: 192.168.99.101
+    KAFKA_ADDRESS: 192.168.99.100
+    ZOOKEEPER_ADDRESS: 192.168.99.100
+    ELASTICSEARCH_ADDRESS: 192.168.99.100
+    ELASTICSEARCH_INDEX: vimond-numbers
+    ELASTICSEARCH_TYPE: user-asset_playback-event
 

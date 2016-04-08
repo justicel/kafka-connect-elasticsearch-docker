@@ -1,0 +1,82 @@
+{
+  "properties" : {
+    "asset_playback" : {
+      "_all": { "enabled": false },
+      "properties" : {
+        "appName" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "assetId" : {
+          "type" : "long"
+        },
+        "bandwidth" : {
+          "type" : "long"
+        },
+        "categoryId" : {
+          "type" : "long"
+        },
+        "categoryPlatformId" : {
+          "type" : "long"
+        },
+        "geo.country" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "geo.city" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "geo.location" : {
+          "type": "geo_point"
+        },
+        "geo.isp" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "geo.organization" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "ip" : {
+          "type" : "ip"
+        },
+        "playType" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "userId" : {
+          "type" : "string",
+          "index": "not_analyzed"
+        },
+        "videoFileId" : {
+          "type" : "long"
+        }
+      }
+    },
+    "eventName" : {
+      "type" : "string",
+      "index": "not_analyzed"
+    },
+    "guid" : {
+      "type" : "string",
+      "index": "not_analyzed"
+    },
+    "originator" : {
+      "type" : "string",
+      "index": "not_analyzed"
+    },
+    "timestamp" : {
+      "type" : "date",
+      "format" : "dateOptionalTime"
+    },
+    "versions" : {
+      "type" : "string",
+      "index": "not_analyzed"
+    },
+    "tenant" : {
+      "type" : "string",
+      "index": "not_analyzed"
+    }
+  }
+}

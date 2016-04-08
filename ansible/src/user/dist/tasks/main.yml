@@ -16,12 +16,14 @@
       - 8160:8160
     env:
       KAFKA_CONNECT_MODE: distributed
-      ZOOKEEPER_ADDRESS: zk-0.service.consul/kafka0.8
+      ZOOKEEPER_ADDRESS: zk-0.service.consul
       KAFKA_ADDRESS: kafka-08.service.consul
-      ELASTICSEARCH: elasticsearch.service.consul
+      ELASTICSEARCH_ADDRESS: elasticsearch.service.consul
       CONFIG_STORAGE_TOPIC: kafka-connect-config
       OFFSET_STORAGE_TOPIC: kafka-connect-offset
       THIS_IP: "{{ thisIp }}"
       KAFKA_NAMESPACE: /kafka0.8
+      ELASTICSEARCH_INDEX: vimond-numbers
+      ELASTICSEARCH_TYPE: user-asset_playback-event
   tags:
     - kafka_kafka-connect-elasticsearch-docker
