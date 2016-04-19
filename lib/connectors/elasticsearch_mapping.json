@@ -16,6 +16,10 @@
         "categoryId" : {
           "type" : "long"
         },
+        "categoryPath" : {
+          "type" : "string",
+          "analyzer" : "whitespace"
+        },
         "categoryPlatformId" : {
           "type" : "long"
         },
