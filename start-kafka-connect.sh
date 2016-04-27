@@ -7,7 +7,12 @@ fi
 #create elasticsearch index and mapping
 
 curl -H "Content-Type: application/json"  -XPUT $ELASTICSEARCH_ADDRESS:9200/$ELASTICSEARCH_INDEX -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/elasticsearch_index_settings.json
-curl -H "Content-Type: application/json"  -XPUT $ELASTICSEARCH_ADDRESS:9200/$ELASTICSEARCH_INDEX/_mapping/$ELASTICSEARCH_TYPE -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/elasticsearch_mapping.json
+
+IFS=',' read -ra TYPE <<< "$ELASTICSEARCH_TYPES"
+for i in "${TYPE[@]}"; do
+    echo $i
+    curl -H "Content-Type: application/json"  -XPUT $ELASTICSEARCH_ADDRESS:9200/$ELASTICSEARCH_INDEX/_mapping/${i} -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/${i}.json
+done
 
 if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	BIN_EXEC=connect-standalone

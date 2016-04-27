@@ -38,5 +38,5 @@ kafka-connect:
     ZOOKEEPER_ADDRESS: 192.168.99.100
     ELASTICSEARCH_ADDRESS: 192.168.99.100
     ELASTICSEARCH_INDEX: vimond-numbers
-    ELASTICSEARCH_TYPE: user-asset_playback-event
+    ELASTICSEARCH_TYPES: user-asset_playback-event,order-event,user-operations-event
 
