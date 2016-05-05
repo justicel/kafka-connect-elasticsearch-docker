@@ -38,5 +38,19 @@ kafka-connect:
     ZOOKEEPER_ADDRESS: 192.168.99.100
     ELASTICSEARCH_ADDRESS: 192.168.99.100
     ELASTICSEARCH_INDEX: vimond-numbers
-    ELASTICSEARCH_TYPES: user-asset_playback-event,order-event,user-operations-event
+    ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
+
+kafka-connect1:
+  image: kafka-connect
+  container_name: kafka-connect1
+  hostname: kafka-connect1
+  ports:
+   - "8160:8160"
+  environment:
+    KAFKA_CONNECT_MODE: distributed
+    KAFKA_ADDRESS: 192.168.99.100
+    ZOOKEEPER_ADDRESS: 192.168.99.100
+    ELASTICSEARCH_ADDRESS: 192.168.99.100
+    ELASTICSEARCH_INDEX: vimond-numbers
+    ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
 
