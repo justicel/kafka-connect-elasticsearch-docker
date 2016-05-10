@@ -124,6 +124,8 @@ EXPOSE 9010
 
 ENV SERVICE_8160_NAME kafka-connect-elasticsearch-docker
 ENV SERVICE_8160_TAGS "haproxy-lb-http,service,haproxy-backend"
+ENV SERVICE_8160_CHECK_HTTP /
+ENV SERVICE_8160_CHECK_INTERVAL 15s
 
 ENV SERVICE_9010_NAME kafka-connect-elasticsearch-docker-jmx
 ENV SERVICE_9010_TAGS "tcp,private"
