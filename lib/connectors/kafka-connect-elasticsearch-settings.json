@@ -5,7 +5,7 @@
     "tasks.max": "6",
     "topics": "vimond-insights-topic",
     "geo.path": "/usr/local/share/GeoIP",
-    "es.hostsAndPort": "192.168.99.100:9300",
+    "es.hostsAndPort": "elasticsearch.service.consul:9300",
     "es.index": "vimond-insights",
     "es.types": "user-asset_playback-event,order-domain-event,user-domain-event",
     "es.client.type": "transport",
@@ -13,7 +13,7 @@
     "es.input.json": "true",
     "rest-api.address" : "vimond-rest-api.ha.dev.vops.io",
     "discovery.zen.ping.multicast.enabled": "false",
-    "discovery.zen.ping.unicast.hosts": "192.168.99.100:9200",
+    "discovery.zen.ping.unicast.hosts": "elasticsearch.service.consul:9200",
     "in-memory-map.cache.time": 2
   }
 }
