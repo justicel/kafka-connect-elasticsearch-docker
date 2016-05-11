@@ -53,6 +53,8 @@ ENV \
     GEO_IP_DIRECTORY=/usr/local/share/GeoIP
 
 ADD config/GeoIP.conf $GEO_IP_DIRECTORY/GeoIP.conf
+ADD config/geoupdate /etc/periodic/weekly/geoip
+RUN chmod 755 /etc/periodic/weekly/geoip
 
 WORKDIR /tmp
 
@@ -71,14 +73,10 @@ RUN wget "https://github.com/maxmind/geoipupdate/releases/download/v2.2.2/geoipu
     && wget "http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz" \
     && gunzip -c GeoIP.dat.gz > $GEO_IP_DIRECTORY/GeoIP.dat \
     && rm GeoIP.dat.gz \
-
-
-    # Setup a cron job that updates the geo database
-    && echo \
-    '#!/bin/sh\ngeoipupdate -f /usr/local/share/GeoIP/GeoIP.conf 2>&1 | logger'\ >> /etc/periodic/weekly/geoip \
-    && chmod +x /etc/periodic/weekly/geoip \
     && rm -rf "/tmp/"*  \
-    && mkdir /service/cron
+    && mkdir /service/cron \
+    && mkdir /etc/periodic/1min
+
 
 #create folder for supervising kafka execution
 RUN mkdir /service/kafka

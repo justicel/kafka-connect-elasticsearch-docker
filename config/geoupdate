@@ -1,0 +1,2 @@
+#!/bin/sh
+geoipupdate -f /usr/local/share/GeoIP/GeoIP.conf 2>&1 | logger

@@ -4,21 +4,11 @@ if [[ -z "$CLASSPATH" ]]; then
     export CLASSPATH="${KAFKA_HOME}/connectors/*"
 fi
 
-#create elasticsearch index and mapping
-
-curl -H "Content-Type: application/json"  -XPUT ${ELASTICSEARCH_ADDRESS}:9200/${ELASTICSEARCH_INDEX} -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/elasticsearch_index_settings.json
-
-IFS=',' read -ra TYPE <<< "${ELASTICSEARCH_TYPES}"
-for i in "${TYPE[@]}"; do
-    curl -H "Content-Type: application/json"  -XPUT ${ELASTICSEARCH_ADDRESS}:9200/${ELASTICSEARCH_INDEX}/_mapping/${i} -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/${i}.json
-done
+CONNECTOR_NAME=${CONNECTOR_NAME:-elasticsearch}
 
 if [[ ${KAFKA_CONNECT_MODE} == 'standalone' ]]; then
 	BIN_EXEC=connect-standalone
 	CONFIG_FILE=connect-standalone.properties
-
-	CONNECTOR_NAME=${CONNECTOR_NAME:-elasticsearch}
-
 	if [[ ${CONNECTOR_NAME} == 'elasticsearch' ]]; then
 
 	  cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/connect-elasticsearch.properties.template | sed \
@@ -53,6 +43,13 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
     -e "s|{{KAFKA_ADDRESS}}|${KAFKA_ADDRESS:-kafka}|g" \
     -e "s|{{CONNECT_ADVERTISED_HOSTNAME}}|${CONNECT_ADVERTISED_HOSTNAME:-$THIS_IP}|g" \
     > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
+
+
+    if [[ ${CONNECTOR_NAME} == 'elasticsearch' ]]; then
+        echo '*       *       *       *       *       run-parts /etc/periodic/1min' >> /etc/crontabs/root
+        mv ${KAFKA_HOME}/connectors/start-connector /etc/periodic/1min
+        chmod +x /etc/periodic/1min/start-connector
+    fi
 
     exec /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/bin/${BIN_EXEC}.sh /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/config/${CONFIG_FILE}-new.properties
 
