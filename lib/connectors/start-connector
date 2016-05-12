@@ -1,4 +1,5 @@
 #!/bin/sh
+sleep $[ ( $RANDOM % 20 )  + 1 ]s
 while ! curl -XPOST http://localhost:8160/connectors -H 'Accept: application/json' -H 'Content-type: application/json' -d @/opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/kafka-connect-elasticsearch-settings.json
 do
   echo "waiting for Rest server to start"
