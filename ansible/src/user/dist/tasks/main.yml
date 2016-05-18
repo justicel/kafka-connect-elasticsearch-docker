@@ -22,8 +22,8 @@
       ZOOKEEPER_ADDRESS: zk-0.service.consul
       KAFKA_ADDRESS: kafka-08.service.consul
       ELASTICSEARCH_ADDRESS: elasticsearch.service.consul
-      CONFIG_STORAGE_TOPIC: vimond-numbers-config
-      OFFSET_STORAGE_TOPIC: vimond-numbers-offset
+      CONFIG_STORAGE_TOPIC: "{{ ext_vimond_insights_config_topic | d('vimond-numbers-config') }}"
+      OFFSET_STORAGE_TOPIC: "{{ ext_vimond_insights_offset_topic | d('vimond-numbers-offset') }}"
       THIS_IP: "{{ thisIp }}"
       KAFKA_NAMESPACE: /kafka0.8
       REST_API_ADDRESS: "{{ ext_vimond_rest_api_url }}"
