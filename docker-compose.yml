@@ -39,6 +39,8 @@ kafka-connect:
     ELASTICSEARCH_ADDRESS: 192.168.99.100
     ELASTICSEARCH_INDEX: vimond-numbers
     ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
+    REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
+    KAFKA_TOPICS: asset-playback
 
 kafka-connect1:
   image: kafka-connect1
@@ -53,4 +55,5 @@ kafka-connect1:
     ELASTICSEARCH_ADDRESS: 192.168.99.100
     ELASTICSEARCH_INDEX: vimond-numbers
     ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
-
+    REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
+    KAFKA_TOPICS: asset-playback

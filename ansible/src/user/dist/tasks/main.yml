@@ -26,7 +26,7 @@
       OFFSET_STORAGE_TOPIC: vimond-insights-offset
       THIS_IP: "{{ thisIp }}"
       KAFKA_NAMESPACE: /kafka0.8
-      ELASTICSEARCH_INDEX: vimond-numbers
-      ELASTICSEARCH_TYPES: user-asset_playback-event
+      REST_API_ADDRESS: "{{ ext_vimond_rest_api_url }}"
+      KAFKA_TOPICS: asset-playback
   tags:
     - kafka_kafka-connect-elasticsearch-docker

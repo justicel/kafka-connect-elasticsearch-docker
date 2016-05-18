@@ -46,6 +46,13 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
 
 
     if [[ ${CONNECTOR_NAME} == 'elasticsearch' ]]; then
+
+        cat /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/kafka-connect-elasticsearch-settings.json.template | sed \
+        -e "s|{{ELASTICSEARCH_ADDRESS}}|${ELASTICSEARCH_ADDRESS:-elasticsearch.service.consul}|g" \
+        -e "s|{{REST_API_ADDRESS}}|${REST_API_ADDRESS}|g" \
+        -e "s|{{KAFKA_TOPICS}}|${KAFKA_TOPICS}|g" \
+        > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/kafka-connect-elasticsearch-settings.json
+
         echo '*       *       *       *       *       run-parts /etc/periodic/1min' >> /etc/crontabs/root
         mv ${KAFKA_HOME}/connectors/start-connector /etc/periodic/1min
         chmod +x /etc/periodic/1min/start-connector
