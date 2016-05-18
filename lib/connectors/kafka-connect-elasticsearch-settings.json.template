@@ -6,7 +6,7 @@
     "topics": "{{KAFKA_TOPICS}}",
     "geo.path": "/usr/local/share/GeoIP",
     "es.hostsAndPort": "{{ELASTICSEARCH_ADDRESS}}:9300",
-    "es.index": "vimond-insights",
+    "es.index": "vimond-numbers",
     "es.types": "user-asset_playback-event",
     "es.client.type": "transport",
     "es.cluster.name": "packetbeat",
