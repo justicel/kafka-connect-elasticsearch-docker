@@ -14,6 +14,7 @@
       - 9010
     ports:
       - 8160:8160
+      - 9010:9010
     env:
       NEW_RELIC_LICENSE_KEY: "{{ newrelic_apm_license_key }}"
       NEW_RELIC_APP_NAME: "{{ service_name }}"
@@ -21,11 +22,11 @@
       ZOOKEEPER_ADDRESS: zk-0.service.consul
       KAFKA_ADDRESS: kafka-08.service.consul
       ELASTICSEARCH_ADDRESS: elasticsearch.service.consul
-      CONFIG_STORAGE_TOPIC: kafka-connect-config-benchmark
-      OFFSET_STORAGE_TOPIC: kafka-connect-offset-benchmark
+      CONFIG_STORAGE_TOPIC: vimond-insights-config
+      OFFSET_STORAGE_TOPIC: vimond-insights-offset
       THIS_IP: "{{ thisIp }}"
       KAFKA_NAMESPACE: /kafka0.8
       ELASTICSEARCH_INDEX: vimond-numbers
-      ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
+      ELASTICSEARCH_TYPES: user-asset_playback-event
   tags:
     - kafka_kafka-connect-elasticsearch-docker

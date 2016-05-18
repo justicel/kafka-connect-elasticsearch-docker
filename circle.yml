@@ -22,7 +22,7 @@ test:
 
 deployment:
   artifactory:
-    branch: benchmark
+    branch: deploy
     commands:
       - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASSWORD -e developers@vimond.com $DOCKER_PRIVATE_REPO
       - docker tag -f $IMAGE_NAME:$CIRCLE_BUILD_NUM $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest

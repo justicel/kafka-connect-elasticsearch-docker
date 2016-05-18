@@ -8,3 +8,4 @@ done
 echo "connector started successfully"
 #delete crontab job
 sed -i '$ d' /etc/crontabs/root
+rm /etc/periodic/1min/start-connector
