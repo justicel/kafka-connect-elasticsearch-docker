@@ -51,6 +51,7 @@ elif [[ ${KAFKA_CONNECT_MODE} == 'distributed' ]]; then
         -e "s|{{ELASTICSEARCH_ADDRESS}}|${ELASTICSEARCH_ADDRESS:-elasticsearch.service.consul}|g" \
         -e "s|{{REST_API_ADDRESS}}|${REST_API_ADDRESS}|g" \
         -e "s|{{KAFKA_TOPICS}}|${KAFKA_TOPICS}|g" \
+        -e "s|{{MAX_TASKS}}|${MAX_TASKS}|g" \
         > /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/connectors/kafka-connect-elasticsearch-settings.json
 
         echo '*       *       *       *       *       run-parts /etc/periodic/1min' >> /etc/crontabs/root

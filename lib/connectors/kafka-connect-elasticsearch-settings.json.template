@@ -2,7 +2,7 @@
   "name": "elasticsearch-sink-connector",
   "config": {
     "connector.class": "com.vimond.elasticsearch_kafka_connector.sink.ElasticsearchSinkConnector",
-    "tasks.max": "4",
+    "tasks.max": "{{MAX_TASKS}}",
     "topics": "{{KAFKA_TOPICS}}",
     "geo.path": "/usr/local/share/GeoIP",
     "es.hostsAndPort": "{{ELASTICSEARCH_ADDRESS}}:9300",

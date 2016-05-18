@@ -27,6 +27,7 @@
       THIS_IP: "{{ thisIp }}"
       KAFKA_NAMESPACE: /kafka0.8
       REST_API_ADDRESS: "{{ ext_vimond_rest_api_url }}"
-      KAFKA_TOPICS: asset-playback
+      KAFKA_TOPICS: "{{ ext_vimond_insights_topics }}"
+      MAX_TASKS: "{{ ext_vimond_insights_tasks }}"
   tags:
     - kafka_kafka-connect-elasticsearch-docker
