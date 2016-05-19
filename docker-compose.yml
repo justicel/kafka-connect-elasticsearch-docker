@@ -19,7 +19,7 @@ kafka:
     - "9092:9092"
 
 elasticsearch:
-   image: elasticsearch:1.7.2
+   image: elasticsearch:2.3.0
    container_name: elasticsearch
    hostname: elasticsearch
    ports:
@@ -27,7 +27,7 @@ elasticsearch:
     - "9300:9300"
 
 kafka-connect:
-  image: kafka-connect
+  image: kafka-connect:es2
   container_name: kafka-connect
   hostname: kafka-connect
   ports:
@@ -40,7 +40,8 @@ kafka-connect:
     ELASTICSEARCH_INDEX: vimond-numbers
     ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
     REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
-    KAFKA_TOPICS: asset-playback
+    KAFKA_TOPICS: vimond-insights-topic
+    MAX_TASKS: 1
 
 kafka-connect1:
   image: kafka-connect1
@@ -56,4 +57,5 @@ kafka-connect1:
     ELASTICSEARCH_INDEX: vimond-numbers
     ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
     REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
-    KAFKA_TOPICS: asset-playback
+    KAFKA_TOPICS: vimond-insights-topic
+    MAX_TASKS: 1
