@@ -36,7 +36,7 @@ kafka-connect:
     KAFKA_CONNECT_MODE: distributed
     KAFKA_ADDRESS: 192.168.99.100
     ZOOKEEPER_ADDRESS: 192.168.99.100
-    ELASTICSEARCH_ADDRESS: 192.168.99.100
+    ELASTICSEARCH_ADDRESS: 10.20.11.214
     ELASTICSEARCH_INDEX: vimond-numbers
     ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
     REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
