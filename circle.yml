@@ -30,7 +30,7 @@ deployment:
       - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
       - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
       - sh ansible/deploy_me.sh $CIRCLE_SHA1 $(git describe --tags --always) $IMAGE_NAME
-      - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"
+  #    - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"
 
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
@@ -41,4 +41,4 @@ deployment:
       - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:$(git describe --tags --always)
       - docker push $DOCKER_PRIVATE_REPO/$IMAGE_NAME:latest
       - sh ansible/deploy_me.sh $CIRCLE_SHA1 $(git describe --tags --always) $IMAGE_NAME
-      - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"
+  #    - curl -i -X POST -H "X-Rundeck-Auth-Token:$RUNDECK_KEY" "https://rundeck.vops.io/api/$RUNDECK_API_VER/job/$RUNDECK_DEPLOY_JOB/executions?argString=-servicename+$CIRCLE_PROJECT_REPONAME+-git_sha+$CIRCLE_SHA1"
