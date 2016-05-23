@@ -15,7 +15,7 @@ ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
 #Install scala
 RUN cd "/tmp" && \
-    wget "http://downloads.typesafe.com/scala/${SCALA_VERSION_DOWNLOAD}/scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
+    wget "http://downloads.lightbend.com/scala/${SCALA_VERSION_DOWNLOAD}/scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
     tar xzf "scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
     mkdir "${SCALA_HOME}" && \
     rm "/tmp/scala-${SCALA_VERSION_DOWNLOAD}/bin/"*.bat && \
@@ -23,7 +23,7 @@ RUN cd "/tmp" && \
     ln -s "${SCALA_HOME}/bin/"* "/usr/bin/" && \
     rm -rf "/tmp/"*
 
-RUN echo 'http://dl-4.alpinelinux.org/alpine/v3.3/main' > /etc/apk/repositories
+#RUN echo 'http://dl-4.alpinelinux.org/alpine/v3.3/main' > /etc/apk/repositories
 
 RUN apk update \
     && apk add jq \
