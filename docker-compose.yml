@@ -27,7 +27,7 @@ elasticsearch:
     - "9300:9300"
 
 kafka-connect:
-  image: kafka-connect:es2
+  image: vimond-docker-dockerv2-local.artifactoryonline.com/kafka-connect:es2
   container_name: kafka-connect
   hostname: kafka-connect
   ports:
