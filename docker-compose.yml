@@ -38,9 +38,10 @@ kafka-connect:
     ZOOKEEPER_ADDRESS: 192.168.99.100
     ELASTICSEARCH_ADDRESS: 192.168.99.100
     ELASTICSEARCH_INDEX: vimond-numbers
-    ELASTICSEARCH_TYPES: user-asset_playback-event,order-domain-event,user-domain-event
     REST_API_ADDRESS: https://vimond-rest-api.ha.dev.vops.io
+    ELASTICSEARCH_TEMPLATES: vimond-numbers-template
     KAFKA_TOPICS: asset-playback
+    MAX_TASKS: 1
 
 kafka-connect1:
   image: kafka-connect1
