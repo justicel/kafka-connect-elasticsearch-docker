@@ -2,7 +2,6 @@ FROM anapsix/alpine-java
 
 MAINTAINER Matteo Remo Luzzi <matteo@vimond.com> 
 
-
 ENV KAFKA_VERSION "0.9.0.0"
 ENV SCALA_VERSION_DOWNLOAD "2.11.0"
 ENV SCALA_VERSION "2.11"
@@ -13,6 +12,17 @@ ENV JAVA_HOME /opt/jdk
 ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
 
+# Update ca-certificates
+RUN apk update \
+  && apk add ca-certificates wget \
+  && update-ca-certificates \
+  && apk add jq \
+  && apk add zlib-dev \
+  && apk add curl-dev \
+  && apk add sudo \
+  && apk add build-base \
+  && apk add curl coreutils file
+
 #Install scala
 RUN cd "/tmp" && \
     wget "http://downloads.typesafe.com/scala/${SCALA_VERSION_DOWNLOAD}/scala-${SCALA_VERSION_DOWNLOAD}.tgz" && \
@@ -22,15 +32,6 @@ RUN cd "/tmp" && \
     mv "/tmp/scala-${SCALA_VERSION_DOWNLOAD}/bin" "/tmp/scala-${SCALA_VERSION_DOWNLOAD}/lib" "${SCALA_HOME}" && \
     ln -s "${SCALA_HOME}/bin/"* "/usr/bin/" && \
     rm -rf "/tmp/"*
-
-RUN echo 'http://dl-4.alpinelinux.org/alpine/v3.3/main' > /etc/apk/repositories
-
-RUN apk update \
-    && apk add jq \
-    && apk add zlib-dev \
-    && apk add curl-dev \
-    && apk add sudo \
-    && apk add build-base
 
 #install daemontools
 RUN mkdir -p /package && \
